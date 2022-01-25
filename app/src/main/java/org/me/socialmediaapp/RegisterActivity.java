@@ -47,6 +47,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mPassword = findViewById(R.id.passwordEt);
         mRegister = findViewById(R.id.registerBtn);
         mRegister.setOnClickListener(this);
+        mLogin = findViewById(R.id.loginTv);
+        mLogin.setOnClickListener(this);
     }
 
     @Override

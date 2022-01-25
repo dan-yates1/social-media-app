@@ -4,7 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/drawable/red_edit_text.xml" value="0.35" />
-        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/activity_register.xml" value="0.5" />
+        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/activity_register.xml" value="0.33" />
       </map>
     </option>
   </component>
