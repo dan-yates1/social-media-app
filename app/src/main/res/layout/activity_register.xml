@@ -10,7 +10,7 @@
         android:id="@+id/titleTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Social Media"
+        android:text="Social Media."
         android:textColor="@color/ntu_red"
         android:textSize="50sp"
         android:textStyle="bold"
@@ -92,7 +92,6 @@
         android:text="Sign up"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="@+id/passwordEt"
         app:layout_constraintStart_toStartOf="@+id/passwordEt"
@@ -122,5 +121,6 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView" />
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

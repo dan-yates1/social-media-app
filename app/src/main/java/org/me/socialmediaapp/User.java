@@ -4,7 +4,8 @@ public class User {
 
     private String mEmail, mName, mPassword;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String email, String name, String password) {
         mEmail = email;
