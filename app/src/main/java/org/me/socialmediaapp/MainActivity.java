@@ -21,30 +21,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
+            item -> {
+                Fragment selectedFragment = null;
 
-                    switch (item.getItemId()) {
-                        case R.id.nav_home:
-                            selectedFragment = new HomeFragment();
-                            break;
-                        case R.id.nav_messages:
-                            selectedFragment = new MessagesFragment();
-                            break;
-                        case R.id.nav_upload:
-                            selectedFragment = new UploadFragment();
-                            break;
-                        case R.id.nav_settings:
-                            selectedFragment = new SettingsFragment();
-                            break;
-                    }
-
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout,
-                            selectedFragment).commit();
-
-                    return true;
+                switch (item.getItemId()) {
+                    case R.id.nav_home:
+                        selectedFragment = new HomeFragment();
+                        break;
+                    case R.id.nav_messages:
+                        selectedFragment = new MessagesFragment();
+                        break;
+                    case R.id.nav_upload:
+                        selectedFragment = new UploadFragment();
+                        break;
+                    case R.id.nav_settings:
+                        selectedFragment = new SettingsFragment();
+                        break;
                 }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout,
+                        selectedFragment).commit();
+
+                return true;
             };
 }

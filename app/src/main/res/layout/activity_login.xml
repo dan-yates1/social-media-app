@@ -6,6 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email address"
+        android:textColor="@color/ntu_red"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/emailEt"
+        app:layout_constraintStart_toStartOf="@+id/emailEt"
+        android:layout_marginBottom="5dp" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:textColor="@color/ntu_red"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/passwordEt"
+        app:layout_constraintStart_toStartOf="@+id/passwordEt"
+        android:layout_marginBottom="5dp"/>
+
     <Button
         android:id="@+id/loginBtn"
         android:layout_width="0dp"
@@ -25,7 +47,6 @@
         android:layout_height="50dp"
         android:background="@drawable/red_edit_text"
         android:ems="10"
-        android:hint="Email address"
         android:inputType="textPersonName"
         android:padding="10dp"
         android:textColor="@color/ntu_red"
@@ -40,7 +61,6 @@
         android:layout_height="50dp"
         android:background="@drawable/red_edit_text"
         android:ems="10"
-        android:hint="Password"
         android:inputType="textPassword"
         android:padding="10dp"
         android:password="true"
@@ -72,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginEnd="60dp"
-        android:text="Social Media."
+        android:text="Social Media"
         android:textColor="@color/ntu_red"
         android:textSize="50sp"
         android:textStyle="bold"

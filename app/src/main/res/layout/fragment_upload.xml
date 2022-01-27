@@ -1,6 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textColor="@color/ntu_red"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionEt"
+        app:layout_constraintStart_toStartOf="@+id/descriptionEt" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textColor="@color/ntu_red"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/titleEt"
+        app:layout_constraintStart_toStartOf="@+id/titleEt" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create post"
+        android:textColor="@color/ntu_red"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="25dp"/>
+
+    <EditText
+        android:id="@+id/titleEt"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/red_edit_text"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/locationBtn"
+        app:layout_constraintEnd_toEndOf="@+id/locationBtn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/locationBtn"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <Button
+        android:id="@+id/locationBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="@android:color/transparent"
+        android:text="Tag location"
+        android:textAlignment="textStart"
+        android:textColor="@color/ntu_red"
+        app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
+        app:iconGravity="end"
+        app:iconTint="@color/ntu_red"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleEt" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/uploadBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationBtn"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/uploadBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Upload"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionEt"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:textAlignment="textStart"
+        android:textColor="@color/ntu_red"
+        app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
+        app:iconGravity="end"
+        app:iconTint="@color/ntu_red"
+        android:backgroundTint="@android:color/transparent"/>
+
+    <EditText
+        android:id="@+id/descriptionEt"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/red_edit_text"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/publishBtn"
+        app:layout_constraintEnd_toEndOf="@+id/titleEt"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/titleEt"
+        app:layout_constraintTop_toBottomOf="@+id/uploadBtn" />
+
+    <Button
+        android:id="@+id/publishBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Publish"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/descriptionEt"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/descriptionEt"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionEt"
+        android:textAlignment="textStart"
+        android:textColor="@color/ntu_red"
+        app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
+        app:iconGravity="end"
+        app:iconTint="@color/ntu_red"
+        android:backgroundTint="@android:color/transparent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
