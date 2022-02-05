@@ -7,17 +7,6 @@
     tools:context=".RegisterActivity">
 
     <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Password"
-        android:textColor="@color/ntu_red"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/passwordEt"
-        app:layout_constraintStart_toStartOf="@+id/passwordEt"
-        android:layout_marginBottom="5dp" />
-
-    <TextView
         android:id="@+id/titleTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,25 +23,24 @@
         android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
         android:text="Sign up to see pictures from all your colleagues and friends."
         android:textAlignment="center"
         android:textColor="@color/ntu_red"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/emailEt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/emailEt"
+        app:layout_constraintStart_toStartOf="@+id/emailEt"
         app:layout_constraintTop_toBottomOf="@+id/titleTv" />
 
     <EditText
         android:id="@+id/emailEt"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
         android:background="@drawable/red_edit_text"
         android:ems="10"
+        android:hint="Email"
         android:inputType="textEmailAddress"
         android:padding="10dp"
         android:textColor="@color/ntu_red"
@@ -68,6 +56,7 @@
         android:layout_height="50dp"
         android:background="@drawable/red_edit_text"
         android:ems="10"
+        android:hint="Name"
         android:inputType="textPersonName"
         android:padding="10dp"
         android:textColor="@color/ntu_red"
@@ -83,6 +72,7 @@
         android:layout_height="50dp"
         android:background="@drawable/red_edit_text"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
         android:padding="10dp"
         android:password="true"
@@ -132,25 +122,4 @@
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="@+id/textView" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email address"
-        android:textColor="@color/ntu_red"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/emailEt"
-        app:layout_constraintStart_toStartOf="@+id/emailEt"
-        android:layout_marginBottom="5dp" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Full name"
-        android:textColor="@color/ntu_red"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/nameEt"
-        app:layout_constraintStart_toStartOf="@+id/nameEt"
-        android:layout_marginBottom="5dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

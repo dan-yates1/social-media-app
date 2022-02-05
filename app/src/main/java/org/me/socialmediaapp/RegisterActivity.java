@@ -2,6 +2,7 @@ package org.me.socialmediaapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -11,10 +12,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final String TAG = "TAG";
     private EditText mEmail, mName, mPassword;
     private Button mRegister;
     private TextView mLogin;
@@ -87,17 +95,32 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             mPassword.requestFocus();
             return;
         }
-        registerUser(email, password);
+        registerUser(email, name, password);
     }
 
-    public void registerUser(String email, String password) {
+    public void registerUser(String email, String name, String password) {
         mAuth.createUserWithEmailAndPassword(email, password).
                 addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(getApplicationContext(), "User account created successfully!", Toast.LENGTH_LONG).show();
+                        addUserToFirestore(new User(email, name, password));
+                        startActivity(new Intent(this, MainActivity.class));
                     } else {
                         Toast.makeText(getApplicationContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    public void addUserToFirestore(User user) {
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+        DocumentReference docRef = fStore
+                .collection("users")
+                .document(mAuth.getCurrentUser().getUid());
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("name", user.getName());
+        userMap.put("email", user.getEmail());
+        userMap.put("password", user.getPassword());
+        docRef.set(userMap).addOnSuccessListener((OnSuccessListener) o ->
+                Log.d(TAG, "onSuccess: User profile is created for" + mAuth.getCurrentUser().getUid()));
     }
 }

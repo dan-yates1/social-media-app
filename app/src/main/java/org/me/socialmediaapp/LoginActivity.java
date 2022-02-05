@@ -9,12 +9,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText mEmail, mPassword;
-    private Button mLogin;
+    private Button mLogin, mGLogin;
     FirebaseAuth mAuth;
 
     @Override
@@ -32,6 +33,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mPassword = findViewById(R.id.passwordEt);
         mLogin = findViewById(R.id.loginBtn);
         mLogin.setOnClickListener(this);
+        mGLogin = findViewById(R.id.googleLoginBtn);
+        mGLogin.setOnClickListener(this);
     }
 
     @Override
@@ -39,6 +42,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.loginBtn:
                 login();
+                break;
+            case R.id.googleLoginBtn:
+                //loginWithGoogle();
                 break;
         }
     }
