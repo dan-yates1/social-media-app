@@ -5,11 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/commentCountTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="4"
+        android:textColor="@color/ntu_red"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/commentBtn"
+        app:layout_constraintStart_toEndOf="@+id/commentBtn"
+        app:layout_constraintTop_toTopOf="@+id/commentBtn" />
+
     <ImageButton
         android:id="@+id/shareButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginEnd="25dp"
         android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/likeBtn"
         app:layout_constraintEnd_toEndOf="@+id/postImage"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/commentBtn"
@@ -20,7 +36,7 @@
         android:id="@+id/profilePic"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="0dp"
         app:layout_constraintStart_toStartOf="@+id/descriptionTv"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -48,10 +64,13 @@
 
     <TextView
         android:id="@+id/descriptionTv"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="5dp"
-        android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et #lorem"
+        android:layout_marginEnd="25dp"
+        android:textSize="20dp"
+        android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,10 +79,11 @@
     <ImageView
         android:id="@+id/postImage"
         android:layout_width="0dp"
-        android:layout_height="350dp"
+        android:layout_height="370dp"
         android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/descriptionTv"
-        app:layout_constraintStart_toStartOf="@+id/descriptionTv"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionTv"
         tools:srcCompat="@tools:sample/avatars" />
 
@@ -71,8 +91,10 @@
         android:id="@+id/likeBtn"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toStartOf="@+id/commentBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -85,10 +107,25 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/likeBtn"
         app:layout_constraintEnd_toStartOf="@+id/shareButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/likeBtn"
         app:layout_constraintTop_toTopOf="@+id/likeBtn"
         app:srcCompat="@drawable/ic_comment" />
+
+    <TextView
+        android:id="@+id/likeCountTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="11"
+        android:textColor="@color/ntu_red"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/likeBtn"
+        app:layout_constraintStart_toEndOf="@+id/likeBtn"
+        app:layout_constraintTop_toTopOf="@+id/likeBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
