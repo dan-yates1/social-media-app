@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+        bottomNav.setSelectedItemId(R.id.nav_home);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -27,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.nav_home:
                         selectedFragment = new HomeFragment();
-                        break;
-                    case R.id.nav_messages:
-                        selectedFragment = new MessagesFragment();
                         break;
                     case R.id.nav_upload:
                         selectedFragment = new UploadFragment();

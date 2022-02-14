@@ -15,8 +15,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu"
-        app:labelVisibilityMode="unlabeled"
-        app:itemIconSize="40dp"/>
+        app:itemIconSize="30dp"/>
 
     <FrameLayout
         android:id="@+id/fragmentLayout"

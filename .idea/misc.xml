@@ -3,33 +3,31 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/drawable/circle.xml" value="0.3555" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/drawable/ic_comment.xml" value="0.3555" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/drawable/ic_home.xml" value="0.3555" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/drawable/ic_like.xml" value="0.3555" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/drawable/ic_share.xml" value="0.3555" />
+        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/drawable/img.xml" value="0.3555" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/drawable/post_list_view_cell.xml" value="0.3555" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/drawable/red_edit_text.xml" value="0.35" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/drawable/red_fill_edit_text.xml" value="0.3555" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/activity_register.xml" value="0.33" />
-        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/fragment_home.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/fragment_home.xml" value="0.30117753623188404" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/fragment_messages.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/fragment_upload.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/post_item.xml" value="0.33" />
+        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/fragment_settings.xml" value="0.25" />
+        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/fragment_upload.xml" value="0.2" />
+        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/post_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/post_item2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/layout/settings_messages.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/menu/bottom_nav.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Dan/Documents/Uni/Year4/MobileInteractiveSystems/Coursework/SocialMediaApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.2006340579710145" />
-        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.298876953125" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.249276025744452" />
-        <entry key="app/src/main/res/layout/fragment_upload.xml" value="0.20043859649122808" />
-        <entry key="app/src/main/res/layout/post_item.xml" value="0.35499053955078125" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

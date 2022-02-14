@@ -19,26 +19,28 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UploadFragment extends Fragment implements View.OnClickListener {
 
     public static final String TAG = "TAG";
     private EditText mTitleEt, mDescEt;
-    private Button mLocationBtn, mUploadBtn, mRemoveBtn, mPublishBtn;
+    private Button mLocationBtn, mUploadBtn, mPublishBtn;
     private ImageView mPostIv;
-    private Uri mPost;
+
+    private Uri mImgUri;
     private Location mLocation;
+
     private FirebaseAuth mAuth;
     private StorageReference mStorageRef;
 
@@ -59,11 +61,9 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
         mDescEt = v.findViewById(R.id.descEt);
         mLocationBtn = v.findViewById(R.id.locationBtn);
         mLocationBtn.setOnClickListener(this);
-        mUploadBtn = v.findViewById(R.id.removeBtn);
+        mUploadBtn = v.findViewById(R.id.uploadBtn);
         mUploadBtn.setOnClickListener(this);
-        mRemoveBtn = v.findViewById(R.id.removeBtn);
-        mRemoveBtn.setOnClickListener(this);
-        mPublishBtn = v.findViewById(R.id.removeBtn);
+        mPublishBtn = v.findViewById(R.id.publishBtn);
         mPublishBtn.setOnClickListener(this);
         mPostIv = v.findViewById(R.id.postIv);
     }
@@ -77,10 +77,6 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
             case R.id.uploadBtn:
                 selectImage();
                 break;
-            case R.id.removeBtn:
-                mPost = null;
-                mPostIv = null;
-                break;
             case R.id.publishBtn:
                 publish();
                 break;
@@ -91,7 +87,7 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
         Post post = new Post();
         post.setTitle(mTitleEt.getText().toString().trim());
         post.setDesc(mDescEt.getText().toString().trim());
-        post.setImage(mPost);
+        post.setImage(mImgUri);
         // TODO: Add post to firebase
     }
 
@@ -108,32 +104,19 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
     }
 
     public void selectImage() {
-        Intent i = new Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-        startActivityForResult(i, 1);
-        /*
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);*/
+        startActivityForResult(intent, 1);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            mPost = data.getData();
-            mPostIv.setImageURI(mPost);
-            uploadImage();
+            mImgUri = data.getData();
+            mPostIv.setImageURI(mImgUri);
         }
-    }
-
-    public void uploadImage() {
-        final String randomKey = UUID.randomUUID().toString();
-        StorageReference riversRef = mStorageRef.child("images/" + randomKey);
-        riversRef.putFile(mPost);
     }
 
     public Location getLocation() {

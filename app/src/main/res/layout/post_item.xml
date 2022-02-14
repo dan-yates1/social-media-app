@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp">
 
     <TextView
         android:id="@+id/commentCountTv"
@@ -32,14 +33,14 @@
         app:layout_constraintTop_toTopOf="@+id/likeBtn"
         app:srcCompat="@drawable/ic_share" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profilePic"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_marginTop="0dp"
+        android:src="@drawable/ntu"
         app:layout_constraintStart_toStartOf="@+id/descriptionTv"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/nameTv"
