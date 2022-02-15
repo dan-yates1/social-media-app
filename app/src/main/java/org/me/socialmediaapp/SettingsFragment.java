@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -72,29 +73,19 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         StorageReference imgRef = mStorageRef.child("images/" + mAuth.getCurrentUser().getUid());
         imgRef.putFile(mImgUri)
                 .addOnFailureListener(e -> {
-                    //Toast.makeText(getContext().getApplicationContext(), "Failed to Upload.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext().getApplicationContext(), "Failed to Upload.", Toast.LENGTH_LONG).show();
                 })
                 .addOnSuccessListener(taskSnapshot -> {
-                    // Uri imgUri = taskSnapshot.getDownloadUrl();
                     Snackbar.make(getActivity().findViewById(android.R.id.content), "Image Uploaded.", Snackbar.LENGTH_LONG).show();
                 });
     }
 
     private void fetchProfilePic() {
-        StorageReference imgRef = mStorageRef.child("images/" + mAuth.getCurrentUser().getUid());
-        final long ONE_MEGABYTE = 1024 * 1024;
-
-        imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                mImgView.setImageBitmap(bmp);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(getContext().getApplicationContext(), "Failed to Fetch Profile Picture.", Toast.LENGTH_LONG).show();
-            }
+        mStorageRef.child("images/" + mAuth.getCurrentUser().getUid()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            mImgView.setImageBitmap(bmp);
+        }).addOnFailureListener(exception -> {
+            // Handle any errors
         });
     }
 
@@ -110,6 +101,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
+            mImgUri = uri;
             mImgView.setImageURI(uri);
             uploadImage();
         }

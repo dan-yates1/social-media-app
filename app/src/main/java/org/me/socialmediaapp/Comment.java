@@ -2,12 +2,10 @@ package org.me.socialmediaapp;
 
 public class Comment {
     private User mAuthor;
-    private Post mPost;
     private String mComment;
 
-    public Comment(User mAuthor, Post mPost, String mComment) {
+    public Comment(User mAuthor, String mComment) {
         this.mAuthor = mAuthor;
-        this.mPost = mPost;
         this.mComment = mComment;
     }
 
@@ -20,14 +18,6 @@ public class Comment {
 
     public void setAuthor(User mAuthor) {
         this.mAuthor = mAuthor;
-    }
-
-    public Post getPost() {
-        return mPost;
-    }
-
-    public void setPost(Post mPost) {
-        this.mPost = mPost;
     }
 
     public String getComment() {

@@ -1,100 +1,70 @@
 package org.me.socialmediaapp;
 
-import android.location.Location;
-import android.media.Image;
-import android.net.Uri;
-
 import java.util.ArrayList;
 
 public class Post {
 
-    private String mTitle, mDesc;
-    //private Location mLocation;
-    private String mImage;
-    private User mAuthor;
-    private ArrayList<String> mComments;
-    private int mLikes;
-    private int mCommentCount;
+    private String title, desc, imgRef, authorId;
+    private int likes;
+    private ArrayList<Comment> comments;
 
     public Post() {
     }
 
-    public Post(String mTitle, String mDesc, String mImage, User author) {
-        this.mTitle = mTitle;
-        this.mDesc = mDesc;
-        //this.mLocation = mLocation;
-        this.mImage = mImage;
-        this.mAuthor = author;
-        this.mComments = new ArrayList<>();
-        this.mLikes = 0;
-        this.mCommentCount = 0;
-    }
-
-    public void addComment(String comment) {
-        mComments.add(comment);
-    }
-
-    public ArrayList<String> getComments() {
-        return mComments;
-    }
-
-    public void setComments(ArrayList<String> mComments) {
-        this.mComments = mComments;
-    }
-
-    public User getAuthor() {
-        return mAuthor;
-    }
-
-    public void setAuthor(User author) {
-        this.mAuthor = author;
-    }
-
-    public int getLikes() {
-        return mLikes;
-    }
-
-    public void setLikes(int mLikes) {
-        this.mLikes = mLikes;
-    }
-
-    public int getCommentCount() {
-        return mCommentCount;
-    }
-
-    public void setComments(int commentCount) {
-        this.mCommentCount = commentCount;
+    public Post(String title, String desc, String image, String authorId) {
+        this.title = title;
+        this.desc = desc;
+        this.imgRef = image;
+        this.authorId = authorId;
+        this.likes = 0;
+        this.comments = new ArrayList<Comment>();
     }
 
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
-    public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDesc() {
-        return mDesc;
+        return desc;
     }
 
-    public void setDesc(String mDesc) {
-        this.mDesc = mDesc;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
-    /*public Location getLocation() {
-        return mLocation;
+    public String getImgRef() {
+        return imgRef;
     }
 
-    public void setLocation(Location mLocation) {
-        this.mLocation = mLocation;
+    public void setImgRef(String imgRef) {
+        this.imgRef = imgRef;
     }
 
-    public Uri getImage() {
-        return mImage;
+    public String getAuthorId() {
+        return authorId;
     }
 
-    public void setImage(Uri mImage) {
-        this.mImage = mImage;
-    }*/
+    public void setAuthor(String authorId) {
+        this.authorId = authorId;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public ArrayList<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<Comment> comments) {
+        this.comments = comments;
+    }
 }
