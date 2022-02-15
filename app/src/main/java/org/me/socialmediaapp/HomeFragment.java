@@ -2,6 +2,8 @@ package org.me.socialmediaapp;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,10 +22,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFragment extends Fragment {
     private CircleImageView mProfilePic;
+    private RecyclerView mRecyclerView;
+
+    private PostAdapter listAdapter;
+    private ArrayList<Post> mPosts;
 
     private FirebaseAuth mAuth;
     private FirebaseStorage mStorage;
@@ -36,6 +46,8 @@ public class HomeFragment extends Fragment {
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference();
 
+        mPosts = new ArrayList<>();
+
         initInterface(v);
         fetchProfilePic();
 
@@ -44,6 +56,23 @@ public class HomeFragment extends Fragment {
 
     private void initInterface(View v) {
         mProfilePic = v.findViewById(R.id.profilePic);
+        mRecyclerView = v.findViewById(R.id.recyclerView);
+        setUpRecyclerView();
+    }
+
+    private void setUpRecyclerView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+        listAdapter = new PostAdapter(mPosts, getContext());
+        mRecyclerView.setAdapter(listAdapter);
+        getPosts();
+    }
+
+    private void getPosts() {
+        User user = new User();
+        Post post = new Post("This is my posts", "This is a description, wow this is a cool posts.", "", user);
+        mPosts.add(post);
+        listAdapter.notifyDataSetChanged();
     }
 
     private void fetchProfilePic() {

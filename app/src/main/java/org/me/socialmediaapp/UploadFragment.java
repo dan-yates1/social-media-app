@@ -72,7 +72,7 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.locationBtn:
-                mLocation = getLocation();
+                //getLocation();
                 break;
             case R.id.uploadBtn:
                 selectImage();
@@ -87,7 +87,7 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
         Post post = new Post();
         post.setTitle(mTitleEt.getText().toString().trim());
         post.setDesc(mDescEt.getText().toString().trim());
-        post.setImage(mImgUri);
+        //post.setImage(mImgUri);
         // TODO: Add post to firebase
     }
 
@@ -117,10 +117,5 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
             mImgUri = data.getData();
             mPostIv.setImageURI(mImgUri);
         }
-    }
-
-    public Location getLocation() {
-        Location loc = null;
-        return loc;
     }
 }

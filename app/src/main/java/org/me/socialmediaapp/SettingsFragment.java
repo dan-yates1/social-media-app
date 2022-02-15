@@ -2,15 +2,19 @@ package org.me.socialmediaapp;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -54,7 +58,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private void initInterface(View v) {
         mImgView = v.findViewById(R.id.profilePicIv);
         mImgView.setOnClickListener(this);
-        mName = v.findViewById(R.id.changePicBtn);
+        mName = v.findViewById(R.id.changeNameBtn);
         mName.setOnClickListener(this);
         mBio = v.findViewById(R.id.changeBioBtn);
         mBio.setOnClickListener(this);
@@ -120,11 +124,36 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case R.id.changeBioBtn:
                 break;
             case R.id.changeNameBtn:
+                changeName();
                 break;
             case R.id.logoutBtn:
                 mAuth.getInstance().signOut();
                 startActivity(new Intent(v.getContext(), RegisterActivity.class));
                 break;
         }
+    }
+
+    public void changeName() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Change Name");
+
+        View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.input, (ViewGroup) getView(), false);
+
+        final EditText input = (EditText) viewInflated.findViewById(R.id.input);
+
+        builder.setView(viewInflated);
+
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+            dialog.dismiss();
+            String name = input.getText().toString();
+            updateNameInFirebase(name);
+        });
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+    private void updateNameInFirebase(String name) {
+
     }
 }

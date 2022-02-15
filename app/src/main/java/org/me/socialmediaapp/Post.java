@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public class Post {
 
     private String mTitle, mDesc;
-    private Location mLocation;
-    private Uri mImage;
+    //private Location mLocation;
+    private String mImage;
     private User mAuthor;
     private ArrayList<String> mComments;
     private int mLikes;
@@ -19,10 +19,10 @@ public class Post {
     public Post() {
     }
 
-    public Post(String mTitle, String mDesc, Location mLocation, Uri mImage, User author) {
+    public Post(String mTitle, String mDesc, String mImage, User author) {
         this.mTitle = mTitle;
         this.mDesc = mDesc;
-        this.mLocation = mLocation;
+        //this.mLocation = mLocation;
         this.mImage = mImage;
         this.mAuthor = author;
         this.mComments = new ArrayList<>();
@@ -82,7 +82,7 @@ public class Post {
         this.mDesc = mDesc;
     }
 
-    public Location getLocation() {
+    /*public Location getLocation() {
         return mLocation;
     }
 
@@ -96,5 +96,5 @@ public class Post {
 
     public void setImage(Uri mImage) {
         this.mImage = mImage;
-    }
+    }*/
 }
