@@ -70,4 +70,16 @@ public class Post {
     public void setPostUid(String postUid) {
         this.postUid = postUid;
     }
+
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
 }

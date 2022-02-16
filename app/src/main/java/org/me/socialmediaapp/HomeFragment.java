@@ -1,5 +1,6 @@
 package org.me.socialmediaapp;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -8,6 +9,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firestore.v1.WriteResult;
 
 import java.util.ArrayList;
 
@@ -60,20 +65,9 @@ public class HomeFragment extends Fragment {
         getUserObj();
         initInterface(v);
 
-        return v;
-    }
-
-    private void initInterface(View v) {
-        mProfilePic = v.findViewById(R.id.profilePic);
-        mRecyclerView = v.findViewById(R.id.recyclerView);
-
-        fetchProfilePic();
-        setUpRecyclerView();
-    }
-
-    private void setUpRecyclerView() {
         Query query = FirebaseFirestore.getInstance()
-                .collection("posts");
+                .collection("posts")
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
                 .setQuery(query, Post.class)
@@ -88,19 +82,21 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull PostViewHolder holder, int position, @NonNull Post model) {
+            protected void onBindViewHolder(@NonNull PostViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull Post model) {
+                holder.post = model;
+                holder.position = position;
                 holder.descriptionTv.setText(model.getDesc());
 
                 mStorageRef.child("images/" + model.getImgRef()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
                     Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    holder.postImage.setImageBitmap(bmp);
+                    holder.profilePic.setImageBitmap(bmp);
                 }).addOnFailureListener(exception -> {
                     // Handle any errors
                 });
 
                 mStorageRef.child("images/" + model.getAuthorId()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
                     Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    holder.profilePic.setImageBitmap(bmp);
+                    holder.postImage.setImageBitmap(bmp);
                 }).addOnFailureListener(exception -> {
                     // Handle any errors
                 });
@@ -125,17 +121,23 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
+
+        return v;
+    }
+
+    private void initInterface(View v) {
+        mProfilePic = v.findViewById(R.id.profilePic);
+        mRecyclerView = v.findViewById(R.id.recyclerView);
+
+        fetchProfilePic();
     }
 
     private void getUserObj() {
         DocumentReference docRef = mDb.collection("users").document(mAuth.getUid());
         docRef.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            User user = documentSnapshot.toObject(User.class);
-                        }
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        User user = documentSnapshot.toObject(User.class);
                     }
                 });
     }
@@ -159,5 +161,56 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         mAdapter.startListening();
+    }
+
+    private class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView nameTv, descriptionTv, postTimeTv, likeCount, commentCount;
+        private CircleImageView profilePic;
+        private ImageView postImage;
+        private ImageButton likeBtn, commentBtn, shareButton;
+
+        private Post post;
+        private int position;
+        private Boolean liked;
+
+        public PostViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            nameTv = itemView.findViewById(R.id.nameTv);
+            descriptionTv = itemView.findViewById(R.id.descriptionTv);
+            postTimeTv = itemView.findViewById(R.id.postTimeTv);
+            profilePic = itemView.findViewById(R.id.profilePic);
+            postImage = itemView.findViewById(R.id.postImage);
+            likeBtn = itemView.findViewById(R.id.likeBtn);
+            likeBtn.setOnClickListener(this);
+            commentBtn = itemView.findViewById(R.id.commentBtn);
+            shareButton = itemView.findViewById(R.id.shareButton);
+            likeCount = itemView.findViewById(R.id.likeCountTv);
+            commentCount = itemView.findViewById(R.id.commentCountTv);
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.likeBtn:
+                    updateLikeCount();
+                    break;
+                case R.id.commentBtn:
+                    // Open comment activity
+                    break;
+            }
+        }
+
+        public void updateLikeCount() {
+            int likes = Integer.parseInt((String) likeCount.getText());
+            mDb.collection("posts").document(post.getPostUid())
+            .update("likes", likes+1)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            likeCount.setText(String.valueOf(likes+1));
+                        }
+                    });
+        }
     }
 }

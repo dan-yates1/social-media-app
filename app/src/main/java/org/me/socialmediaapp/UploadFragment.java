@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -87,9 +88,13 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
     }
 
     public void addPostToFirestore(Post post) {
+        String postUid = UUID.randomUUID().toString();
+        post.setPostUid(postUid);
+        Timestamp timestamp = Timestamp.now();
+        post.setTimestamp(timestamp);
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-        fStore.collection("posts")
-                .add(post).addOnSuccessListener(new OnSuccessListener(){
+        fStore.collection("posts").document(postUid)
+                .set(post).addOnSuccessListener(new OnSuccessListener(){
             @Override
             public void onSuccess(Object o) {
                 Snackbar.make(getActivity().findViewById(android.R.id.content), "Post Uploaded.", Snackbar.LENGTH_LONG).show();
@@ -112,7 +117,7 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
                     //Toast.makeText(getContext().getApplicationContext(), "Failed to Upload.", Toast.LENGTH_LONG).show();
                 })
                 .addOnSuccessListener(taskSnapshot -> {
-                    Snackbar.make(getActivity().findViewById(android.R.id.content), "Image Uploaded.", Snackbar.LENGTH_LONG).show();
+                    //Snackbar.make(getActivity().findViewById(android.R.id.content), "Image Uploaded.", Snackbar.LENGTH_LONG).show();
                 });
     }
 
