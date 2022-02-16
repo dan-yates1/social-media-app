@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:text="4"
+        android:text="0"
         android:textColor="@color/ntu_red"
         android:textSize="20dp"
         android:textStyle="bold"
@@ -47,7 +47,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="Daniel Yates"
         android:textColor="@color/ntu_red"
         android:textSize="34sp"
 
@@ -80,13 +79,14 @@
     <ImageView
         android:id="@+id/postImage"
         android:layout_width="0dp"
-        android:layout_height="370dp"
+        android:layout_height="0dp"
         android:layout_marginTop="5dp"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionTv"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        app:layout_constraintDimensionRatio="H,1:1"/>
 
     <ImageButton
         android:id="@+id/likeBtn"
@@ -121,7 +121,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:text="11"
+        android:text="0"
         android:textColor="@color/ntu_red"
         android:textSize="20dp"
         android:textStyle="bold"

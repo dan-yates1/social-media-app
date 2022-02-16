@@ -18,9 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,11 +39,13 @@ public class HomeFragment extends Fragment {
     private RecyclerView mRecyclerView;
 
     FirestoreRecyclerAdapter mAdapter;
-    private ArrayList<Post> mPosts = new ArrayList<>();;
+    private ArrayList<Post> mPosts = new ArrayList<>();
+    private User mUser;
 
     private FirebaseAuth mAuth;
     private FirebaseStorage mStorage;
     private StorageReference mStorageRef;
+    private FirebaseFirestore mDb;
 
     @Nullable
     @Override
@@ -49,7 +55,9 @@ public class HomeFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference();
+        mDb = FirebaseFirestore.getInstance();
 
+        getUserObj();
         initInterface(v);
 
         return v;
@@ -58,6 +66,7 @@ public class HomeFragment extends Fragment {
     private void initInterface(View v) {
         mProfilePic = v.findViewById(R.id.profilePic);
         mRecyclerView = v.findViewById(R.id.recyclerView);
+
         fetchProfilePic();
         setUpRecyclerView();
     }
@@ -80,7 +89,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NonNull PostViewHolder holder, int position, @NonNull Post model) {
-                holder.nameTv.setText(model.getTitle());
                 holder.descriptionTv.setText(model.getDesc());
 
                 mStorageRef.child("images/" + model.getImgRef()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
@@ -90,18 +98,46 @@ public class HomeFragment extends Fragment {
                     // Handle any errors
                 });
 
-                mStorageRef.child("images/" + mAuth.getCurrentUser().getUid()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+                mStorageRef.child("images/" + model.getAuthorId()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
                     Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     holder.profilePic.setImageBitmap(bmp);
                 }).addOnFailureListener(exception -> {
                     // Handle any errors
                 });
+
+                DocumentReference docRef = mDb.collection("users").document(model.getAuthorId());
+                docRef.get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                String name = documentSnapshot.getString("name");
+                                holder.nameTv.setText(name);
+                            }
+                        });
+
+                holder.likeCount.setText(String.valueOf(model.getLikes()));
+
+                if (model.getComments() != null) {
+                    holder.commentCount.setText(String.valueOf(model.getComments().size()));
+                }
             }
         };
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void getUserObj() {
+        DocumentReference docRef = mDb.collection("users").document(mAuth.getUid());
+        docRef.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            User user = documentSnapshot.toObject(User.class);
+                        }
+                    }
+                });
     }
 
     private void fetchProfilePic() {

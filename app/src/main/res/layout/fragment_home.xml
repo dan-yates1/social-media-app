@@ -13,8 +13,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView9"
-        app:civ_border_width="3dp"
-        app:civ_border_color="@color/ntu_red"
         android:src="@drawable/white_box"/>
 
     <TextView

@@ -30,12 +30,11 @@ import java.util.UUID;
 public class UploadFragment extends Fragment implements View.OnClickListener {
 
     public static final String TAG = "TAG";
-    private EditText mTitleEt, mDescEt;
+    private EditText mDescEt;
     private Button mLocationBtn, mUploadBtn, mPublishBtn;
     private ImageView mPostIv;
 
     private Uri mImgUri;
-    private Location mLocation;
     private String mImgUid;
 
     private FirebaseAuth mAuth;
@@ -54,7 +53,6 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
     }
 
     public void initInterface(View v) {
-        mTitleEt = v.findViewById(R.id.titleEt);
         mDescEt = v.findViewById(R.id.descEt);
         mLocationBtn = v.findViewById(R.id.locationBtn);
         mLocationBtn.setOnClickListener(this);
@@ -81,11 +79,10 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
     }
 
     public void publish() {
-        Post post = new Post();
-        post.setTitle(mTitleEt.getText().toString().trim());
-        post.setDesc(mDescEt.getText().toString().trim());
-        post.setAuthor(mAuth.getUid());
-        post.setImgRef(mImgUid);
+        String desc = mDescEt.getText().toString().trim();
+        String author = mAuth.getUid();
+        String imgRef = mImgUid;
+        Post post = new Post(desc, author, imgRef);
         addPostToFirestore(post);
     }
 

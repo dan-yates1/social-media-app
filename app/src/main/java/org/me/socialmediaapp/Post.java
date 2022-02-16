@@ -1,31 +1,26 @@
 package org.me.socialmediaapp;
 
+import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
 
 public class Post {
 
-    private String title, desc, imgRef, authorId;
+    private String desc, imgRef, authorId, postUid;
     private int likes;
     private ArrayList<Comment> comments;
+    private Timestamp timestamp;
 
     public Post() {
     }
 
-    public Post(String title, String desc, String image, String authorId) {
-        this.title = title;
+    public Post(String desc, String image, String authorId) {
         this.desc = desc;
         this.imgRef = image;
         this.authorId = authorId;
         this.likes = 0;
-        this.comments = new ArrayList<Comment>();
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+        this.comments = new ArrayList<>();
+        this.timestamp = Timestamp.now();
     }
 
     public String getDesc() {
@@ -66,5 +61,13 @@ public class Post {
 
     public void setComments(ArrayList<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String getPostUid() {
+        return postUid;
+    }
+
+    public void setPostUid(String postUid) {
+        this.postUid = postUid;
     }
 }

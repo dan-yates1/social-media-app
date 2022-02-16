@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             item -> {
                 Fragment selectedFragment = null;
-
                 switch (item.getItemId()) {
                     case R.id.nav_home:
                         selectedFragment = new HomeFragment();
