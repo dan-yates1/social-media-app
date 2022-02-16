@@ -81,9 +81,9 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
 
     public void publish() {
         String desc = mDescEt.getText().toString().trim();
-        String author = mAuth.getUid();
+        String author = mAuth.getCurrentUser().getUid();
         String imgRef = mImgUid;
-        Post post = new Post(desc, author, imgRef);
+        Post post = new Post(desc, imgRef, author);
         addPostToFirestore(post);
     }
 

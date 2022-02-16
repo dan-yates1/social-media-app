@@ -1,10 +1,9 @@
 package org.me.socialmediaapp;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,20 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firestore.v1.WriteResult;
-
-import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,9 +34,7 @@ public class HomeFragment extends Fragment {
     private CircleImageView mProfilePic;
     private RecyclerView mRecyclerView;
 
-    FirestoreRecyclerAdapter mAdapter;
-    private ArrayList<Post> mPosts = new ArrayList<>();
-    private User mUser;
+    private FirestoreRecyclerAdapter mAdapter;
 
     private FirebaseAuth mAuth;
     private FirebaseStorage mStorage;
@@ -77,7 +66,7 @@ public class HomeFragment extends Fragment {
             @NonNull
             @Override
             public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
                 return new PostViewHolder(view);
             }
 
@@ -87,14 +76,14 @@ public class HomeFragment extends Fragment {
                 holder.position = position;
                 holder.descriptionTv.setText(model.getDesc());
 
-                mStorageRef.child("images/" + model.getImgRef()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+                mStorageRef.child("images/" + model.getAuthorId()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
                     Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     holder.profilePic.setImageBitmap(bmp);
                 }).addOnFailureListener(exception -> {
                     // Handle any errors
                 });
 
-                mStorageRef.child("images/" + model.getAuthorId()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+                mStorageRef.child("images/" + model.getImgRef()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
                     Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     holder.postImage.setImageBitmap(bmp);
                 }).addOnFailureListener(exception -> {
@@ -184,6 +173,7 @@ public class HomeFragment extends Fragment {
             likeBtn = itemView.findViewById(R.id.likeBtn);
             likeBtn.setOnClickListener(this);
             commentBtn = itemView.findViewById(R.id.commentBtn);
+            commentBtn.setOnClickListener(this);
             shareButton = itemView.findViewById(R.id.shareButton);
             likeCount = itemView.findViewById(R.id.likeCountTv);
             commentCount = itemView.findViewById(R.id.commentCountTv);
@@ -196,7 +186,7 @@ public class HomeFragment extends Fragment {
                     updateLikeCount();
                     break;
                 case R.id.commentBtn:
-                    // Open comment activity
+                    startActivity(new Intent(getContext().getApplicationContext(), CommentsActivity.class).putExtra("Post", post));
                     break;
             }
         }
