@@ -61,8 +61,7 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
         initInterface();
 
         Query query = FirebaseFirestore.getInstance()
-                .collection("comments")
-                .whereEqualTo("postUid", mPost.getPostUid())
+                .collection("posts").document(mPost.getPostUid()).collection("comments")
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Comment> options = new FirestoreRecyclerOptions.Builder<Comment>()
@@ -136,11 +135,10 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
         comment.setTimestamp(timestamp);
 
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-        fStore.collection("comments").document(commentUid)
+        fStore.collection("posts").document(mPost.getPostUid())
+                .collection("comments").document(commentUid)
                 .set(comment).addOnSuccessListener((OnSuccessListener) o -> {
                     mCommentEt.setText("");
-                    mAdapter.notifyItemInserted(mAdapter.getItemCount()+1);
-                    mAdapter.notifyDataSetChanged();
                 });
     }
 
