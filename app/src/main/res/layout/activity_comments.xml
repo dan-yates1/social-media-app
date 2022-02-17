@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="25dp"
         android:text="Comments"
         android:textColor="@color/ntu_red"
         android:textSize="40sp"

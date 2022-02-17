@@ -2,7 +2,7 @@ package org.me.socialmediaapp;
 
 public class User {
 
-    private String email, name, password;
+    private String email, name, password, bio;
 
     public User() {
     }
@@ -15,6 +15,14 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public void setEmail(String email) {

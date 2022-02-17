@@ -71,21 +71,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     public void uploadImage() {
         StorageReference imgRef = mStorageRef.child("images/" + mAuth.getCurrentUser().getUid());
-        imgRef.putFile(mImgUri)
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext().getApplicationContext(), "Failed to Upload.", Toast.LENGTH_LONG).show();
-                })
-                .addOnSuccessListener(taskSnapshot -> {
-                    Snackbar.make(getActivity().findViewById(android.R.id.content), "Image Uploaded.", Snackbar.LENGTH_LONG).show();
-                });
+        imgRef.putFile(mImgUri);
     }
 
     private void fetchProfilePic() {
         mStorageRef.child("images/" + mAuth.getCurrentUser().getUid()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
             Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             mImgView.setImageBitmap(bmp);
-        }).addOnFailureListener(exception -> {
-            // Handle any errors
         });
     }
 

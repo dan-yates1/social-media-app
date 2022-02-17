@@ -113,6 +113,7 @@ public class HomeFragment extends Fragment {
     private void initInterface(View v) {
         mProfilePic = v.findViewById(R.id.profilePic);
         mRecyclerView = v.findViewById(R.id.recyclerView);
+        mProfilePic.setOnClickListener(v1 -> startActivity(new Intent(getContext(), ProfileActivity.class)));
         fetchProfilePic();
     }
 
@@ -187,7 +188,7 @@ public class HomeFragment extends Fragment {
         public void updateLikeCount() {
             int likes = Integer.parseInt((String) likeCount.getText());
             mDb.collection("posts").document(post.getPostUid())
-            .update("likes", likes+1)
+                    .update("likes", likes+1)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
