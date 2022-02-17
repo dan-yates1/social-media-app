@@ -5,11 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +19,13 @@ import android.widget.TextView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.UUID;
 
@@ -40,9 +39,12 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
     private RecyclerView mRecyclerView;
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore mDb;
+    private FirebaseStorage mStorage;
+    private StorageReference mStorageRef;
 
     private Post mPost;
-    private FirestoreRecyclerAdapter mAdapter;
+    private FirestoreRecyclerAdapter<Comment, CommentViewHolder> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,9 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
         mPost = (Post) getIntent().getSerializableExtra("Post");
 
         mAuth = FirebaseAuth.getInstance();
+        mDb = FirebaseFirestore.getInstance();
+        mStorage = FirebaseStorage.getInstance();
+        mStorageRef = mStorage.getReference();
 
         initInterface();
 
@@ -60,20 +65,37 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                 .whereEqualTo("postUid", mPost.getPostUid())
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
-        FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
-                .setQuery(query, Post.class)
+        FirestoreRecyclerOptions<Comment> options = new FirestoreRecyclerOptions.Builder<Comment>()
+                .setQuery(query, Comment.class)
                 .build();
 
-        mAdapter = new FirestoreRecyclerAdapter<Post, CommentsActivity.CommentViewHolder>(options) {
+        mAdapter = new FirestoreRecyclerAdapter<Comment, CommentsActivity.CommentViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull CommentViewHolder holder, int position, @NonNull Comment model) {
+                holder.comment = model;
+                holder.position = holder.getAdapterPosition();
+                holder.commentTv.setText(model.getComment());
+
+                DocumentReference docRef = mDb.collection("users").document(model.getAuthor());
+                docRef.get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                String name = documentSnapshot.getString("name");
+                                holder.nameTv.setText(name);
+                            }
+                        });
+
+                mStorageRef.child("images/" + model.getAuthor()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    holder.profilePic.setImageBitmap(bmp);
+                });
+            }
+
             @NonNull
             @Override
             public CommentsActivity.CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment, parent, false);
                 return new CommentsActivity.CommentViewHolder(view);
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull CommentsActivity.CommentViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull Post model) {
             }
         };
 
@@ -96,7 +118,9 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.postBtn:
-                addComment();
+                if (mCommentEt.getText().toString() != "") {
+                    addComment();
+                }
                 break;
             case R.id.backBtn:
                 finish();
@@ -113,30 +137,19 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
 
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
         fStore.collection("comments").document(commentUid)
-                .set(comment).addOnSuccessListener(new OnSuccessListener(){
-            @Override
-            public void onSuccess(Object o) {
-                //Snackbar.make(getActivity().findViewById(android.R.id.content), "Post Uploaded.", Snackbar.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mAdapter.startListening();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAdapter.startListening();
+                .set(comment).addOnSuccessListener((OnSuccessListener) o -> {
+                    mCommentEt.setText("");
+                    mAdapter.notifyItemInserted(mAdapter.getItemCount()+1);
+                    mAdapter.notifyDataSetChanged();
+                });
     }
 
     private class CommentViewHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView profilePic;
         private TextView nameTv, commentTv;
+        private Comment comment;
+        private int position;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -145,5 +158,17 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
             commentTv = itemView.findViewById(R.id.commentTv);
             profilePic = itemView.findViewById(R.id.profilePic);
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAdapter.startListening();
     }
 }

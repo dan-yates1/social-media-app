@@ -79,15 +79,11 @@ public class HomeFragment extends Fragment {
                 mStorageRef.child("images/" + model.getAuthorId()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
                     Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     holder.profilePic.setImageBitmap(bmp);
-                }).addOnFailureListener(exception -> {
-                    // Handle any errors
                 });
 
                 mStorageRef.child("images/" + model.getImgRef()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
                     Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     holder.postImage.setImageBitmap(bmp);
-                }).addOnFailureListener(exception -> {
-                    // Handle any errors
                 });
 
                 DocumentReference docRef = mDb.collection("users").document(model.getAuthorId());
@@ -117,7 +113,6 @@ public class HomeFragment extends Fragment {
     private void initInterface(View v) {
         mProfilePic = v.findViewById(R.id.profilePic);
         mRecyclerView = v.findViewById(R.id.recyclerView);
-
         fetchProfilePic();
     }
 
@@ -135,8 +130,6 @@ public class HomeFragment extends Fragment {
         mStorageRef.child("images/" + mAuth.getCurrentUser().getUid()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
             Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             mProfilePic.setImageBitmap(bmp);
-        }).addOnFailureListener(exception -> {
-            // Handle any errors
         });
     }
 
