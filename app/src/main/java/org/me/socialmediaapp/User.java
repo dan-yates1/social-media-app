@@ -7,10 +7,11 @@ public class User {
     public User() {
     }
 
-    public User(String email, String name, String password) {
+    public User(String email, String name, String password, String bio) {
         this.email = email;
         this.name = name;
         this.password = password;
+        this.bio = bio;
     }
 
     public String getEmail() {

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Post implements Serializable {
 
-    private String desc, imgRef, authorId, postUid;
+    private String desc, imgRef, authorUid, postUid;
     private int likes;
     private ArrayList<Comment> comments;
     private transient Timestamp timestamp;
@@ -15,10 +15,10 @@ public class Post implements Serializable {
     public Post() {
     }
 
-    public Post(String desc, String image, String authorId) {
+    public Post(String desc, String image, String authorUid) {
         this.desc = desc;
         this.imgRef = image;
-        this.authorId = authorId;
+        this.authorUid = authorUid;
         this.likes = 0;
         this.comments = new ArrayList<>();
         this.timestamp = Timestamp.now();
@@ -40,12 +40,12 @@ public class Post implements Serializable {
         this.imgRef = imgRef;
     }
 
-    public String getAuthorId() {
-        return authorId;
+    public String getAuthorUid() {
+        return authorUid;
     }
 
     public void setAuthor(String authorId) {
-        this.authorId = authorId;
+        this.authorUid = authorId;
     }
 
     public int getLikes() {
@@ -72,8 +72,8 @@ public class Post implements Serializable {
         this.postUid = postUid;
     }
 
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
+    public void setAuthorUid(String authorUid) {
+        this.authorUid = authorUid;
     }
 
     public Timestamp getTimestamp() {

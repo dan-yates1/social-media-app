@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -76,27 +75,31 @@ public class HomeFragment extends Fragment {
                 holder.position = position;
                 holder.descriptionTv.setText(model.getDesc());
 
-                mStorageRef.child("images/" + model.getAuthorId()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
-                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    holder.profilePic.setImageBitmap(bmp);
-                });
+                try {
+                    mStorageRef.child("images/" + model.getAuthorUid()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        holder.profilePic.setImageBitmap(bmp);
+                    });
 
-                mStorageRef.child("images/" + model.getImgRef()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
-                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    holder.postImage.setImageBitmap(bmp);
-                });
+                    mStorageRef.child("images/" + model.getImgRef()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        holder.postImage.setImageBitmap(bmp);
+                    });
 
-                DocumentReference docRef = mDb.collection("users").document(model.getAuthorId());
-                docRef.get()
-                        .addOnSuccessListener(documentSnapshot -> {
-                            if (documentSnapshot.exists()) {
-                                String name = documentSnapshot.getString("name");
-                                holder.nameTv.setText(name);
-                            }
-                        });
-                holder.likeCount.setText(String.valueOf(model.getLikes()));
-                if (model.getComments() != null) {
-                    //holder.commentCount.setText(String.valueOf(model.getComments().size()));
+                    DocumentReference docRef = mDb.collection("users").document(model.getAuthorUid());
+                    docRef.get()
+                            .addOnSuccessListener(documentSnapshot -> {
+                                if (documentSnapshot.exists()) {
+                                    String name = documentSnapshot.getString("name");
+                                    holder.nameTv.setText(name);
+                                }
+                            });
+                    holder.likeCount.setText(String.valueOf(model.getLikes()));
+                    if (model.getComments() != null) {
+                        //holder.commentCount.setText(String.valueOf(model.getComments().size()));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         };

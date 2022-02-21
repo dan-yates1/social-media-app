@@ -99,6 +99,8 @@ public class ProfileActivity extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         String name = documentSnapshot.getString("name");
                         nameTv.setText(name);
+                        String bio = documentSnapshot.getString("bio");
+                        bioTv.setText(bio);
                     }
                 });
 
@@ -106,6 +108,8 @@ public class ProfileActivity extends AppCompatActivity {
             Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             mProfilePic.setImageBitmap(bmp);
         });
+
+        
     }
 
     private void initInterface() {
