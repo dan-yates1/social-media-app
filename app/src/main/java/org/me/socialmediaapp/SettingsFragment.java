@@ -3,43 +3,46 @@ package org.me.socialmediaapp;
 import static android.app.Activity.RESULT_OK;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import org.w3c.dom.Text;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
     private CircleImageView mImgView;
     private Button mName, mBio, mImg, mLogout;
+    private TextView mUsername;
 
     private Uri mImgUri;
 
     private FirebaseAuth mAuth;
     private FirebaseStorage mStorage;
     private StorageReference mStorageRef;
+    private FirebaseFirestore mDb;
 
     @Nullable
     @Override
@@ -49,11 +52,24 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         mAuth = FirebaseAuth.getInstance();
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference();
+        mDb = FirebaseFirestore.getInstance();
 
         initInterface(v);
         fetchProfilePic();
+        setData();
 
         return v;
+    }
+
+    private void setData() {
+        DocumentReference docRef = mDb.collection("users").document(mAuth.getCurrentUser().getUid());
+        docRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String name = documentSnapshot.getString("name");
+                        mUsername.setText(name);
+                    }
+                });
     }
 
     private void initInterface(View v) {
@@ -67,6 +83,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         mImg.setOnClickListener(this);
         mLogout = v.findViewById(R.id.logoutBtn);
         mLogout.setOnClickListener(this);
+        mUsername = v.findViewById(R.id.usernameTv);
     }
 
     public void uploadImage() {
@@ -106,6 +123,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 selectImage();
                 break;
             case R.id.changeBioBtn:
+                changeBio();
                 break;
             case R.id.changeNameBtn:
                 changeName();
@@ -120,24 +138,49 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public void changeName() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Change Name");
-
-        View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.input, (ViewGroup) getView(), false);
-
+        View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.layout_change_name, (ViewGroup) getView(), false);
         final EditText input = (EditText) viewInflated.findViewById(R.id.input);
 
         builder.setView(viewInflated);
-
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
             dialog.dismiss();
             String name = input.getText().toString();
-            updateNameInFirebase(name);
+            if (!name.isEmpty()) {
+                updateNameInFirebase(name);
+                mUsername.setText(name);
+            }
         });
         builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
-
         builder.show();
     }
 
-    private void updateNameInFirebase(String name) {
+    public void changeBio() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Change Bio");
+        View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.layout_change_bio, (ViewGroup) getView(), false);
+        final EditText input = (EditText) viewInflated.findViewById(R.id.input);
 
+        builder.setView(viewInflated);
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+            dialog.dismiss();
+            String bio = input.getText().toString();
+            if (!bio.isEmpty()) {
+                updateBioInFirebase(bio);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+    private void updateBioInFirebase(String bio) {
+        mDb.collection("users").document(mAuth.getCurrentUser().getUid())
+                .update("bio", bio)
+                .addOnSuccessListener(aVoid -> Snackbar.make(getActivity().findViewById(android.R.id.content), "Bio Updated.", Snackbar.LENGTH_LONG).show());
+    }
+
+    private void updateNameInFirebase(String name) {
+        mDb.collection("users").document(mAuth.getCurrentUser().getUid())
+                .update("name", name)
+                .addOnSuccessListener(aVoid -> Snackbar.make(getActivity().findViewById(android.R.id.content), "Username Updated.", Snackbar.LENGTH_LONG).show());
     }
 }

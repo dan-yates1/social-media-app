@@ -94,11 +94,9 @@ public class HomeFragment extends Fragment {
                                 holder.nameTv.setText(name);
                             }
                         });
-
                 holder.likeCount.setText(String.valueOf(model.getLikes()));
-
                 if (model.getComments() != null) {
-                    holder.commentCount.setText(String.valueOf(model.getComments().size()));
+                    //holder.commentCount.setText(String.valueOf(model.getComments().size()));
                 }
             }
         };
@@ -189,12 +187,7 @@ public class HomeFragment extends Fragment {
             int likes = Integer.parseInt((String) likeCount.getText());
             mDb.collection("posts").document(post.getPostUid())
                     .update("likes", likes+1)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            likeCount.setText(String.valueOf(likes+1));
-                        }
-                    });
+                    .addOnSuccessListener(aVoid -> likeCount.setText(String.valueOf(likes+1)));
         }
     }
 }

@@ -3,8 +3,10 @@ package org.me.socialmediaapp;
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +28,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class UploadFragment extends Fragment implements View.OnClickListener {
+    private ArrayList<String> permissionsToRequest;
+    private ArrayList<String> permissionsRejected = new ArrayList<>();
+    private ArrayList<String> permissions = new ArrayList<>();
+    private final static int ALL_PERMISSIONS_RESULT = 101;
+    LocationTrack locationTrack;
 
     public static final String TAG = "TAG";
     private EditText mDescEt;
@@ -49,6 +60,17 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
+        permissions.add(ACCESS_FINE_LOCATION);
+        permissions.add(ACCESS_COARSE_LOCATION);
+
+        permissionsToRequest = findUnAskedPermissions(permissions);
+        //get the permissions we have asked for before but are not granted..
+        //we will store this in a global list to access later.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (permissionsToRequest.size() > 0)
+                requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
+        }
+
         initInterface(v);
         return v;
     }
@@ -68,7 +90,7 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.locationBtn:
-                //getLocation();
+                getUserLocation();
                 break;
             case R.id.uploadBtn:
                 selectImage();
@@ -76,6 +98,16 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
             case R.id.publishBtn:
                 publish();
                 break;
+        }
+    }
+
+    private void getUserLocation() {
+        locationTrack = new LocationTrack(getContext());
+        if (locationTrack.canGetLocation()) {
+            double longitude = locationTrack.getLongitude();
+            double latitude = locationTrack.getLatitude();
+        } else {
+            locationTrack.showSettingsAlert();
         }
     }
 
@@ -94,12 +126,9 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
         post.setTimestamp(timestamp);
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
         fStore.collection("posts").document(postUid)
-                .set(post).addOnSuccessListener(new OnSuccessListener(){
-            @Override
-            public void onSuccess(Object o) {
-                Snackbar.make(getActivity().findViewById(android.R.id.content), "Post Uploaded.", Snackbar.LENGTH_LONG).show();
-            }
-        });
+                .set(post).addOnSuccessListener((OnSuccessListener) o ->
+                Snackbar.make(getActivity().findViewById(android.R.id.content),
+                        "Post Uploaded.", Snackbar.LENGTH_LONG).show());
     }
 
     public void selectImage() {
@@ -114,10 +143,7 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
         StorageReference imgRef = mStorageRef.child("images/" + mImgUid);
         imgRef.putFile(mImgUri)
                 .addOnFailureListener(e -> {
-                    //Toast.makeText(getContext().getApplicationContext(), "Failed to Upload.", Toast.LENGTH_LONG).show();
-                })
-                .addOnSuccessListener(taskSnapshot -> {
-                    //Snackbar.make(getActivity().findViewById(android.R.id.content), "Image Uploaded.", Snackbar.LENGTH_LONG).show();
+                    Toast.makeText(getContext().getApplicationContext(), "Failed to Upload Image.", Toast.LENGTH_LONG).show();
                 });
     }
 
@@ -129,5 +155,29 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
             mPostIv.setImageURI(mImgUri);
             uploadImage();
         }
+    }
+
+    private ArrayList<String> findUnAskedPermissions(ArrayList<String> wanted) {
+        ArrayList<String> result = new ArrayList<String>();
+
+        for (String perm : wanted) {
+            if (!hasPermission(perm)) {
+                result.add(perm);
+            }
+        }
+
+        return result;
+    }
+    private boolean hasPermission(String permission) {
+        if (canMakeSmores()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean canMakeSmores() {
+        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
 }
