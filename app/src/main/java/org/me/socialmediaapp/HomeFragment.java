@@ -95,9 +95,6 @@ public class HomeFragment extends Fragment {
                                 }
                             });
                     holder.likeCount.setText(String.valueOf(model.getLikes()));
-                    if (model.getComments() != null) {
-                        //holder.commentCount.setText(String.valueOf(model.getComments().size()));
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

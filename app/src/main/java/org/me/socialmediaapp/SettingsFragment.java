@@ -14,21 +14,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import org.w3c.dom.Text;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -108,19 +105,21 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-            mImgUri = uri;
-            mImgView.setImageURI(uri);
-            uploadImage();
-        }
+        Uri uri = data.getData();
+        mImgUri = uri;
+        mImgView.setImageURI(uri);
+        uploadImage();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.changePicBtn:
-                selectImage();
+                //selectImage()
+                ImagePicker.Companion.with(this)
+                        .cropSquare()
+                        .compress(1024)
+                        .start();
                 break;
             case R.id.changeBioBtn:
                 changeBio();

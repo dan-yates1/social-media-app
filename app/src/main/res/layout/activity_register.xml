@@ -115,6 +115,7 @@
         android:layout_marginStart="5dp"
         android:clickable="true"
         android:text="Log in"
+        android:textAlignment="viewStart"
         android:textColor="@color/ntu_blue"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView"

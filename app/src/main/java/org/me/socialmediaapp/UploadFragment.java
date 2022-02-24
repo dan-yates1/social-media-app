@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.Timestamp;
@@ -132,10 +133,10 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
     }
 
     public void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1);
+        ImagePicker.Companion.with(this)
+                .cropSquare()
+                .compress(1024)
+                .start();
     }
 
     private void uploadImage() {
@@ -150,11 +151,9 @@ public class UploadFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            mImgUri = data.getData();
-            mPostIv.setImageURI(mImgUri);
-            uploadImage();
-        }
+        mImgUri = data.getData();
+        mPostIv.setImageURI(mImgUri);
+        uploadImage();
     }
 
     private ArrayList<String> findUnAskedPermissions(ArrayList<String> wanted) {

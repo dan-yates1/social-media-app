@@ -108,8 +108,6 @@ public class ProfileActivity extends AppCompatActivity {
             Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             mProfilePic.setImageBitmap(bmp);
         });
-
-        
     }
 
     private void initInterface() {
