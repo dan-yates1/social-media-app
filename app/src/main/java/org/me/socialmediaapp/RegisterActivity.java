@@ -108,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(getApplicationContext(), "User account created successfully!", Toast.LENGTH_LONG).show();
-                        addUserToFirestore(new User(email, name, password, ""));
+                        addUserToFirestore(new User(email, name, password, "Go to settings to change your bio", mAuth.getCurrentUser().getUid()));
                     } else {
                         Toast.makeText(getApplicationContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
@@ -129,7 +129,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onSuccess(Object o) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                Log.d(TAG, "onSuccess: User profile is created for" + mAuth.getCurrentUser().getUid());
             }
         });
     }

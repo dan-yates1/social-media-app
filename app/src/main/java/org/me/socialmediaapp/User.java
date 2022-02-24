@@ -2,16 +2,25 @@ package org.me.socialmediaapp;
 
 public class User {
 
-    private String email, name, password, bio;
+    private String email, name, password, bio, uid;
 
     public User() {
     }
 
-    public User(String email, String name, String password, String bio) {
+    public User(String email, String name, String password, String bio, String uid) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.bio = bio;
+        this.uid = uid;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getEmail() {

@@ -161,6 +161,7 @@ public class HomeFragment extends Fragment {
             descriptionTv = itemView.findViewById(R.id.descriptionTv);
             postTimeTv = itemView.findViewById(R.id.postTimeTv);
             profilePic = itemView.findViewById(R.id.profilePic);
+            profilePic.setOnClickListener(this);
             postImage = itemView.findViewById(R.id.postImage);
             likeBtn = itemView.findViewById(R.id.likeBtn);
             likeBtn.setOnClickListener(this);
@@ -179,6 +180,9 @@ public class HomeFragment extends Fragment {
                     break;
                 case R.id.commentBtn:
                     startActivity(new Intent(getContext().getApplicationContext(), CommentsActivity.class).putExtra("Post", post));
+                    break;
+                case R.id.profilePic:
+                    startActivity(new Intent(getContext().getApplicationContext(), ProfileActivity.class).putExtra("Uid", post.getAuthorUid()));
                     break;
             }
         }

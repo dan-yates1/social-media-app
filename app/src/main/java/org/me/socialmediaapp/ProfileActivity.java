@@ -57,7 +57,12 @@ public class ProfileActivity extends AppCompatActivity {
         mStorageRef = mStorage.getReference();
         mDb = FirebaseFirestore.getInstance();
 
-        mProfileUid = mAuth.getCurrentUser().getUid();
+        String uid = (String) getIntent().getSerializableExtra("Uid");
+        if (uid == null) {
+            mProfileUid = mAuth.getCurrentUser().getUid();
+        } else {
+            mProfileUid = uid;
+        }
 
         initInterface();
 
@@ -98,7 +103,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setData() {
-        DocumentReference docRef = mDb.collection("users").document(mAuth.getCurrentUser().getUid());
+        DocumentReference docRef = mDb.collection("users").document(mProfileUid);
         docRef.get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
@@ -122,7 +127,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadBanner() {
-        mStorageRef.child("banners/" + mAuth.getCurrentUser().getUid()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+        mStorageRef.child("banners/" + mProfileUid).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
             Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             mBanner.setImageBitmap(bmp);
         });
@@ -137,6 +142,7 @@ public class ProfileActivity extends AppCompatActivity {
         mBanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mProfileUid == mAuth.getCurrentUser().getUid())
                 selectBanner();
             }
         });
@@ -147,6 +153,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void selectBanner() {
         ImagePicker.Companion.with(this)
                 .compress(1024)
+                .crop(2f, 1f)
                 .start();
     }
 
