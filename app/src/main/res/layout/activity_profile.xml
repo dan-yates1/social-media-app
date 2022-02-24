@@ -33,41 +33,44 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/nameTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Comments"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/commentCountTv"
-        app:layout_constraintStart_toStartOf="@+id/commentCountTv"
-        app:layout_constraintTop_toBottomOf="@+id/commentCountTv" />
-
-    <TextView
-        android:id="@+id/nameTv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:text="Bob Brown"
         android:textAlignment="center"
         android:textColor="@color/ntu_red"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/profilePicIv"
-        app:layout_constraintStart_toEndOf="@+id/profilePicIv"
-        app:layout_constraintTop_toTopOf="@+id/profilePicIv" />
+        app:layout_constraintEnd_toEndOf="@+id/profilePicIv"
+        app:layout_constraintStart_toStartOf="@+id/profilePicIv"
+        app:layout_constraintTop_toBottomOf="@+id/profilePicIv" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profilePicIv"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="25dp"
+    <ImageView
+        android:id="@+id/bannerIv"
+        android:layout_width="0dp"
+        android:layout_height="175dp"
         android:layout_marginTop="25dp"
-        android:src="@drawable/ntu"
+        android:scaleType="fitXY"
+        android:src="@color/ntu_red"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profilePicIv"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="100dp"
+        app:civ_border_width="5dp"
+        app:civ_border_color="@color/white"
+        android:src="@drawable/ntu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bannerIv" />
+
     <TextView
         android:id="@+id/bioTv"
-        android:layout_width="0dp"
+        android:layout_width="361dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
@@ -77,72 +80,7 @@
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePicIv" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Posts"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/postCountTv"
-        app:layout_constraintStart_toStartOf="@+id/postCountTv"
-        app:layout_constraintTop_toBottomOf="@+id/postCountTv" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Likes"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/likeCountTv"
-        app:layout_constraintStart_toStartOf="@+id/likeCountTv"
-        app:layout_constraintTop_toBottomOf="@+id/likeCountTv" />
-
-    <TextView
-        android:id="@+id/postCountTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="10dp"
-        android:text="0"
-        android:textColor="@color/black"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/likeCountTv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="@+id/bioTv"
-        app:layout_constraintTop_toBottomOf="@+id/bioTv" />
-
-    <TextView
-        android:id="@+id/likeCountTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="0"
-        android:textColor="@color/black"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/commentCountTv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/postCountTv"
-        app:layout_constraintTop_toBottomOf="@+id/bioTv" />
-
-    <TextView
-        android:id="@+id/commentCountTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="25dp"
-        android:text="0"
-        android:textColor="@color/black"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/bioTv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/likeCountTv"
-        app:layout_constraintTop_toBottomOf="@+id/bioTv" />
+        app:layout_constraintTop_toBottomOf="@+id/nameTv" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -151,8 +89,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/bioTv" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

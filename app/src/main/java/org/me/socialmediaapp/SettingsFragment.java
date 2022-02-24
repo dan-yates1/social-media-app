@@ -1,7 +1,5 @@
 package org.me.socialmediaapp;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -58,6 +56,25 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.changePicBtn:
+                selectImage();
+                break;
+            case R.id.changeBioBtn:
+                changeBio();
+                break;
+            case R.id.changeNameBtn:
+                changeName();
+                break;
+            case R.id.logoutBtn:
+                mAuth.getInstance().signOut();
+                startActivity(new Intent(v.getContext(), RegisterActivity.class));
+                break;
+        }
+    }
+
     private void setData() {
         DocumentReference docRef = mDb.collection("users").document(mAuth.getCurrentUser().getUid());
         docRef.get()
@@ -83,23 +100,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         mUsername = v.findViewById(R.id.usernameTv);
     }
 
-    public void uploadImage() {
-        StorageReference imgRef = mStorageRef.child("images/" + mAuth.getCurrentUser().getUid());
-        imgRef.putFile(mImgUri);
-    }
-
-    private void fetchProfilePic() {
-        mStorageRef.child("images/" + mAuth.getCurrentUser().getUid()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
-            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            mImgView.setImageBitmap(bmp);
-        });
-    }
-
     public void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1);
+        ImagePicker.Companion.with(this)
+                .cropSquare()
+                .compress(1024)
+                .start();
     }
 
     @Override
@@ -111,27 +116,16 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         uploadImage();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.changePicBtn:
-                //selectImage()
-                ImagePicker.Companion.with(this)
-                        .cropSquare()
-                        .compress(1024)
-                        .start();
-                break;
-            case R.id.changeBioBtn:
-                changeBio();
-                break;
-            case R.id.changeNameBtn:
-                changeName();
-                break;
-            case R.id.logoutBtn:
-                mAuth.getInstance().signOut();
-                startActivity(new Intent(v.getContext(), RegisterActivity.class));
-                break;
-        }
+    public void uploadImage() {
+        StorageReference imgRef = mStorageRef.child("images/" + mAuth.getCurrentUser().getUid());
+        imgRef.putFile(mImgUri);
+    }
+
+    private void fetchProfilePic() {
+        mStorageRef.child("images/" + mAuth.getCurrentUser().getUid()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            mImgView.setImageBitmap(bmp);
+        });
     }
 
     public void changeName() {

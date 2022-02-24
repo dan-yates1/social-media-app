@@ -1,13 +1,16 @@
 package org.me.socialmediaapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,7 +35,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private CircleImageView mProfilePic;
-    private TextView nameTv, bioTv, postCountTv, likeCountTv, commentCountTv;
+    private ImageView mBanner;
+    private TextView nameTv, bioTv;
     private ImageButton mBackButton;
 
     private FirestoreRecyclerAdapter mAdapter;
@@ -58,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         Query query = FirebaseFirestore.getInstance()
                 .collection("posts")
-                .whereEqualTo("authorId", mProfileUid)
+                .whereEqualTo("authorUid", mProfileUid)
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
@@ -108,6 +113,19 @@ public class ProfileActivity extends AppCompatActivity {
             Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             mProfilePic.setImageBitmap(bmp);
         });
+
+        try {
+            loadBanner();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadBanner() {
+        mStorageRef.child("banners/" + mAuth.getCurrentUser().getUid()).getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            mBanner.setImageBitmap(bmp);
+        });
     }
 
     private void initInterface() {
@@ -115,11 +133,30 @@ public class ProfileActivity extends AppCompatActivity {
         mProfilePic = this.findViewById(R.id.profilePicIv);
         nameTv = this.findViewById(R.id.nameTv);
         bioTv = this.findViewById(R.id.bioTv);
-        postCountTv = this.findViewById(R.id.postCountTv);
-        likeCountTv = this.findViewById(R.id.likeCountTv);
-        commentCountTv = this.findViewById(R.id.commentCountTv);
+        mBanner = this.findViewById(R.id.bannerIv);
+        mBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectBanner();
+            }
+        });
         mBackButton = this.findViewById(R.id.backBtn);
         mBackButton.setOnClickListener(v -> finish());
+    }
+
+    private void selectBanner() {
+        ImagePicker.Companion.with(this)
+                .compress(1024)
+                .start();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri uri = data.getData();
+        mBanner.setImageURI(uri);
+        StorageReference imgRef = mStorageRef.child("banners/" + mAuth.getCurrentUser().getUid());
+        imgRef.putFile(uri);
     }
 
     @Override
@@ -135,7 +172,6 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private class PostViewHolder extends RecyclerView.ViewHolder {
-
         private Post post;
         private int position;
 
