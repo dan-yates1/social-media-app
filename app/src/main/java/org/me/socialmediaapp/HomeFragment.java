@@ -1,6 +1,7 @@
 package org.me.socialmediaapp;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +34,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class HomeFragment extends Fragment {
     private CircleImageView mProfilePic;
     private RecyclerView mRecyclerView;
+    private ProgressBar mProgressBar;
 
     private FirestoreRecyclerAdapter mAdapter;
 
@@ -67,6 +70,13 @@ public class HomeFragment extends Fragment {
             public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
                 return new PostViewHolder(view);
+            }
+
+            @Override
+            public void onDataChanged() {
+                if (mProgressBar != null) {
+                    mProgressBar.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -109,6 +119,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void initInterface(View v) {
+        mProgressBar = v.findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(View.VISIBLE);
         mProfilePic = v.findViewById(R.id.profilePic);
         mRecyclerView = v.findViewById(R.id.recyclerView);
         mProfilePic.setOnClickListener(v1 -> startActivity(new Intent(getContext(), ProfileActivity.class)));
