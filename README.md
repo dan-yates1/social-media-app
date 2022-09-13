@@ -1,6 +1,6 @@
 # SocialMediaApp
 
-Instargram clone created in mobile development module for Nottingham Trent University using Android Studio and Java
+A simple image posting social media app created in a mobile development module at Nottingham Trent University using Android Studio and Java
 
 # What I Learnt
 
