@@ -1,4 +1,4 @@
-# SocialMediaApp
+# Social Media App
 
 A simple image posting social media app created in a mobile development module at Nottingham Trent University using Android Studio and Java
 
